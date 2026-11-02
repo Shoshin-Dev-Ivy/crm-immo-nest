@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Contact } from '../../contacts/entities/contact.entity';
+import { Deal } from '../../deals/entities/deal.entity';
 
 export enum PropertyType {
   HOUSE = 'house',
@@ -53,9 +55,12 @@ export class Property {
   @JoinTable()
   contacts!: Contact[];
 
-  @CreateDateColumn()
+  @OneToMany(() => Deal, (deal) => deal.property)
+  deals!: Deal[];
+
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 }

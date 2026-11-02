@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PropertiesModule } from './properties/properties.module';
 import { ContactsModule } from './contacts/contacts.module';
+import { DealsModule } from './deals/deals.module';
 import { PipelineModule } from './pipeline/pipeline.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -24,8 +26,10 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService],
     }),
+    EventEmitterModule.forRoot(),
     PropertiesModule,
     ContactsModule,
+    DealsModule,
     PipelineModule,
     AuthModule,
     UsersModule,

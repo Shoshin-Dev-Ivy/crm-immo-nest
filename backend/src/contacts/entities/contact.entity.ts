@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { Property } from '../../properties/entities/property.entity';
+import { Deal } from '../../deals/entities/deal.entity';
 
 export enum ContactRole {
   BUYER = 'buyer',
@@ -15,7 +17,7 @@ export enum ContactRole {
   LANDLORD = 'landlord',
 }
 
-@Entity()
+@Entity('contacts')
 export class Contact {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -38,9 +40,12 @@ export class Contact {
   @ManyToMany(() => Property, (property) => property.contacts)
   properties!: Property[];
 
-  @CreateDateColumn()
+  @OneToMany(() => Deal, (deal) => deal.contact)
+  deals!: Deal[];
+
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 }
