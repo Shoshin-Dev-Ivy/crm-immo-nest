@@ -12,10 +12,13 @@ export class UsersService {
   ) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email } })
+  return this.userRepository.findOne({
+    where: { email },
+    select: { id: true, email: true, password: true, role: true },
+    })
   }
 
-  async findById(id: number): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { id } })
   }
 
@@ -25,7 +28,7 @@ export class UsersService {
     return this.userRepository.save(user)
   }
 
-  async updateRefreshToken(id: number, token: string | null): Promise<void> {
+  async updateRefreshToken(id: string, token: string | null): Promise<void> {
     await this.userRepository.update(id, { refreshToken: token })
   }
 }

@@ -1,3 +1,4 @@
+//backend/src/auth/auth.controller.ts
 import { Controller, Post, Body, Request, UseGuards, Get } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { RegisterDto } from './dto/register.dto'
@@ -5,6 +6,7 @@ import { LoginDto } from './dto/login.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { RolesGuard } from './roles.guard'
 import { Roles } from './roles.decorator'
+import { JwtPayload } from './jwt-payload.interface'
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +24,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  logout(@Request() req: { user: { id: number } }) {
+  logout(@Request() req: { user: { id: string } }) {
     return this.authService.logout(req.user.id)
   }
 
