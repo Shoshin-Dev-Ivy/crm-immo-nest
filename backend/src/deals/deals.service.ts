@@ -42,6 +42,17 @@ export class DealsService {
     });
   }
 
+  async findBoard(): Promise<Record<DealStage, Deal[]>> {
+    const board = Object.fromEntries(
+      Object.values(DealStage).map((stage) => [stage, [] as Deal[]]),
+    ) as Record<DealStage, Deal[]>;
+
+    for (const deal of await this.findAll()) {
+      board[deal.stage].push(deal);
+    }
+    return board;
+  }
+
   async findHistory(dealId: string): Promise<DealStageHistory[]> {
     const deal = await this.dealsRepo.findOne({ where: { id: dealId } });
     if (!deal) throw new NotFoundException('Deal not found');

@@ -33,6 +33,11 @@ export class DealsController {
     return this.dealsService.findAll();
   }
 
+  @Get('board')
+  async findBoard() {
+    return this.dealsService.findBoard();
+  }
+
   @Get(':id/history')
   async findHistory(@Param('id', ParseUUIDPipe) id: string) {
     return this.dealsService.findHistory(id);
