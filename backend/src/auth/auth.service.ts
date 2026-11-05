@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../users/users.service'
-import { JwtPayload } from './jwt-payload.interface'
+import { JwtPayload, JwtTokenType } from './jwt-payload.interface'
 import * as bcrypt from 'bcrypt'
 
 @Injectable()
@@ -32,9 +32,10 @@ export class AuthService {
   }
 
   private generateTokens(userId: string, email: string, role: string) {
-    const payload: JwtPayload = { sub: userId, email, role }
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' })
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' })
-    return { accessToken, refreshToken }
+    const sign = (type: JwtTokenType, expiresIn: '15m' | '7d') => {
+      const payload: JwtPayload = { sub: userId, email, role, type }
+      return this.jwtService.sign(payload, { expiresIn })
+    }
+    return { accessToken: sign('access', '15m'), refreshToken: sign('refresh', '7d') }
   }
 }
